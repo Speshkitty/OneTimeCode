@@ -23,7 +23,7 @@ public class MainClass extends JavaPlugin {
 			if (p.getItemInHand().getType().equals(Material.WRITTEN_BOOK)) {
 				if (!p.hasPermission("otc.use")) {
 					p.sendMessage(ChatColor.RED + "You don't have permission to do that!");
-					return;
+					return false;
 				}
 				BookMeta bMeta = (BookMeta) p.getItemInHand().getItemMeta();
 				if (bMeta.hasAuthor() && bMeta.getAuthor().equals("One Time Code")) {
