@@ -17,6 +17,7 @@ local.properties
 .loadpath
 *.class
 target/
+/*.yml
 
 # External tool builders
 .externalToolBuilders/
