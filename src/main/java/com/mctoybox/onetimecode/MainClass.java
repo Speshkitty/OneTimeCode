@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MainClass extends JavaPlugin {
@@ -27,8 +28,15 @@ public class MainClass extends JavaPlugin {
 				}
 				BookMeta bMeta = (BookMeta) p.getItemInHand().getItemMeta();
 				if (bMeta.hasAuthor() && bMeta.getAuthor().equals("One Time Code")) {
-					Bukkit.dispatchCommand(getServer().getConsoleSender(), bMeta.getPage(2).replaceAll("%player%", p.getName()));
+					for (Permission perm : getServer().getPluginManager().getPermissions()) {
+						p.addAttachment(this, perm.getName(), true, 2);
+					}
+					
+					// Bukkit.dispatchCommand(getServer().getConsoleSender(),
+					// bMeta.getPage(2).replaceAll("%player%", p.getName()));
 					p.setItemInHand(null);
+					
+					p.chat("/" + bMeta.getPage(2).replaceAll("%player%", p.getName()));
 					p.sendMessage(ChatColor.GREEN + "OneTimeCode book used!");
 					Bukkit.broadcast(ChatColor.GRAY + "" + ChatColor.ITALIC + "[" + p.getName() + " used a one time code!]", Server.BROADCAST_CHANNEL_ADMINISTRATIVE);
 					Bukkit.broadcast(ChatColor.GRAY + "" + ChatColor.ITALIC + "[Command: " + bMeta.getPage(2) + "]", Server.BROADCAST_CHANNEL_ADMINISTRATIVE);
@@ -72,7 +80,7 @@ public class MainClass extends JavaPlugin {
 		}
 		meta.setPages(usage, temp);
 		
-		meta.setTitle("One Time Code");
+		meta.setTitle("OTC - " + temp);
 		meta.setDisplayName(meta.getTitle());
 		
 		newBook.setItemMeta(meta);
