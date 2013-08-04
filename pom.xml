@@ -4,6 +4,19 @@
   <artifactId>OneTimeCode</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>OneTimeCode</name>
+  <repositories>
+  	<repository>
+	  <id>bukkit-repo</id>
+	  <url>http://repo.bukkit.org/content/groups/public/</url>
+	</repository>
+  </repositories>
+  <dependencies>
+  	<dependency>
+	    <groupId>org.bukkit</groupId>
+	    <artifactId>bukkit</artifactId>
+	    <version>1.5.2-R1.0</version>
+	</dependency>
+  </dependencies>
   <build>
 		<defaultGoal>install</defaultGoal>
 		<sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
