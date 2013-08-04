@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
@@ -28,13 +29,20 @@ public class MainClass extends JavaPlugin {
 				}
 				BookMeta bMeta = (BookMeta) p.getItemInHand().getItemMeta();
 				if (bMeta.hasAuthor() && bMeta.getAuthor().equals("One Time Code")) {
-					
-					for (Permission perm : getCommand(bMeta.getPage(2).split(" ")[0]).getPlugin().getDescription().getPermissions()) {
-						p.addAttachment(this, perm.getName(), true, 2);
+					PluginCommand cmd = getServer().getPluginCommand(bMeta.getPage(2).split(" ")[0]);
+					if (cmd == null) {
+						p.sendMessage("Command not found");
+						return true;
+					}
+					if (cmd.getPermission() != null) {
+						p.addAttachment(this, cmd.getPermission(), true, 2);
+					}
+					else {
+						for (Permission perm : cmd.getPlugin().getDescription().getPermissions()) {
+							p.addAttachment(this, perm.getName(), true, 2);
+						}
 					}
 					
-					// Bukkit.dispatchCommand(getServer().getConsoleSender(),
-					// bMeta.getPage(2).replaceAll("%player%", p.getName()));
 					p.setItemInHand(null);
 					
 					p.chat("/" + bMeta.getPage(2).replaceAll("%player%", p.getName()));
