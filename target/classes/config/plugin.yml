@@ -1,19 +1,21 @@
 name: OneTimeCode
 main: com.mctoybox.onetimecode.MainClass
-version: 1.3
+version: 1.5
 author: Sir_Speshkitty
 softdepend: [WorldEdit]
 commands:
   otc:
-    default: true
-    description: All OneTimeCode commands
-    usage: |
-      /<command>
-      /<command> <player> <commanddata>
+    description: Using OTC books
+    permission: otc.use
+    usage: /<command>
+  createotc:
+    description: Creating OTC books
+    permission: otc.create
+    usage: /<command> <player> <commanddata>
 permissions:
   otc.use:
     default: true
     description: Allows using OTC books
   otc.create:
-    default: op
+    default: true
     description: Allows creating OTC books
