@@ -1,5 +1,7 @@
 package com.mctoybox.onetimecode;
 
+import java.lang.reflect.Field;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -7,11 +9,14 @@ import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.command.SimpleCommandMap;
+import org.bukkit.command.defaults.VanillaCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.Permission;
+import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MainClass extends JavaPlugin {
@@ -29,16 +34,19 @@ public class MainClass extends JavaPlugin {
 				}
 				BookMeta bMeta = (BookMeta) p.getItemInHand().getItemMeta();
 				if (bMeta.hasAuthor() && bMeta.getAuthor().equals("One Time Code")) {
-					PluginCommand cmd = getServer().getPluginCommand(bMeta.getPage(2).split(" ")[0]);
+					// get full list of commands
+					
+					Command cmd = getCmd(bMeta.getPage(2).split(" ")[0]);
 					if (cmd == null) {
 						p.sendMessage("Command not found");
 						return true;
 					}
-					if (cmd.getPermission() != null) {
+					if (cmd instanceof VanillaCommand) {
 						p.addAttachment(this, cmd.getPermission(), true, 2);
 					}
 					else {
-						for (Permission perm : cmd.getPlugin().getDescription().getPermissions()) {
+						
+						for (Permission perm : ((PluginCommand) cmd).getPlugin().getDescription().getPermissions()) {
 							p.addAttachment(this, perm.getName(), true, 2);
 						}
 					}
@@ -103,5 +111,36 @@ public class MainClass extends JavaPlugin {
 		}
 		p.sendMessage(ChatColor.GREEN + "You have receieved a OneTimeCode book!");
 		return true;
+	}
+	
+	private Command getCmd(String commandName) {
+		SimplePluginManager spm = (SimplePluginManager) getServer().getPluginManager();
+		
+		Field f = null;
+		try {
+			f = SimplePluginManager.class.getDeclaredField("commandMap");
+		}
+		catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		}
+		catch (SecurityException e) {
+			e.printStackTrace();
+		}
+		f.setAccessible(true);
+		
+		SimpleCommandMap scm;
+		try {
+			scm = (SimpleCommandMap) f.get(spm);
+			return scm.getCommand(commandName);
+			
+		}
+		catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		}
+		catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
+		
 	}
 }
