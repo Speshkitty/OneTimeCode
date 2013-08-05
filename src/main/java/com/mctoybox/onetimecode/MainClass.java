@@ -19,6 +19,8 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.sk89q.bukkit.util.DynamicPluginCommand;
+
 public class MainClass extends JavaPlugin {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (args.length == 0) {
@@ -41,11 +43,25 @@ public class MainClass extends JavaPlugin {
 						p.sendMessage("Command not found");
 						return true;
 					}
+					// Vanilla Commands
 					if (cmd instanceof VanillaCommand) {
 						p.addAttachment(this, cmd.getPermission(), true, 2);
 					}
+					// WorldEdit + WorldGuard Commands
+					else if (getServer().getPluginManager().getPlugin("WorldEdit") != null && cmd instanceof DynamicPluginCommand) {
+						DynamicPluginCommand dpCommand = ((DynamicPluginCommand) cmd);
+						if (dpCommand.getPermissions() == null) {
+							for (Permission perm : dpCommand.getPlugin().getDescription().getPermissions()) {
+								p.addAttachment(this, perm.getName(), true, 2);
+							}
+						}
+						else {
+							for (String perm : dpCommand.getPermissions()) {
+								p.addAttachment(this, perm, true, 2);
+							}
+						}
+					}
 					else {
-						
 						for (Permission perm : ((PluginCommand) cmd).getPlugin().getDescription().getPermissions()) {
 							p.addAttachment(this, perm.getName(), true, 2);
 						}

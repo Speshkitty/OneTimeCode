@@ -1,7 +1,8 @@
 name: OneTimeCode
 main: com.mctoybox.onetimecode.MainClass
-version: 1
+version: 1.3
 author: Sir_Speshkitty
+softdepend: [WorldEdit]
 commands:
   otc:
     default: true
