@@ -8,10 +8,15 @@ import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MainClass extends JavaPlugin {
+	protected int ticksToAllowPermissions;
+	
 	@Override
 	public void onEnable() {
 		getCommand("otc").setExecutor(new UseCommand(this));
 		getCommand("createotc").setExecutor(new CreateCommand(this));
+		
+		saveDefaultConfig();
+		ticksToAllowPermissions = getConfig().getInt("ticksToAllowPermissions", 2);
 	}
 	
 	protected Command getCmd(String commandName) {

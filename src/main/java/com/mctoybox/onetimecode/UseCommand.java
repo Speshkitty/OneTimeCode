@@ -42,25 +42,26 @@ public class UseCommand implements CommandExecutor {
 				}
 				// Vanilla Commands
 				if (cmd instanceof VanillaCommand) {
-					p.addAttachment(mainClass, cmd.getPermission(), true, 2);
+					p.addAttachment(mainClass, cmd.getPermission(), true, mainClass.ticksToAllowPermissions);
 				}
 				// WorldEdit + WorldGuard Commands
 				else if (mainClass.getServer().getPluginManager().getPlugin("WorldEdit") != null && cmd instanceof DynamicPluginCommand) {
 					DynamicPluginCommand dpCommand = ((DynamicPluginCommand) cmd);
 					if (dpCommand.getPermissions() == null) {
 						for (Permission perm : dpCommand.getPlugin().getDescription().getPermissions()) {
-							p.addAttachment(mainClass, perm.getName(), true, 2);
+							p.addAttachment(mainClass, perm.getName(), true, mainClass.ticksToAllowPermissions);
 						}
 					}
 					else {
 						for (String perm : dpCommand.getPermissions()) {
-							p.addAttachment(mainClass, perm, true, 2);
+							p.addAttachment(mainClass, perm, true, mainClass.ticksToAllowPermissions);
 						}
 					}
 				}
+				// All none specified commands
 				else {
 					for (Permission perm : ((PluginCommand) cmd).getPlugin().getDescription().getPermissions()) {
-						p.addAttachment(mainClass, perm.getName(), true, 2);
+						p.addAttachment(mainClass, perm.getName(), true, mainClass.ticksToAllowPermissions);
 					}
 				}
 				

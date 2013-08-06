@@ -1,6 +1,6 @@
 name: OneTimeCode
 main: com.mctoybox.onetimecode.MainClass
-version: 1.5
+version: 1.6
 author: Sir_Speshkitty
 softdepend: [WorldEdit]
 commands:
@@ -17,5 +17,5 @@ permissions:
     default: true
     description: Allows using OTC books
   otc.create:
-    default: true
+    default: op
     description: Allows creating OTC books
