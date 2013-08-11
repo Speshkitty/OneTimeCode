@@ -2,6 +2,7 @@ name: OneTimeCode
 main: com.mctoybox.onetimecode.MainClass
 version: 1.6
 author: Sir_Speshkitty
+depend: [Vault]
 softdepend: [WorldEdit]
 commands:
   otc:

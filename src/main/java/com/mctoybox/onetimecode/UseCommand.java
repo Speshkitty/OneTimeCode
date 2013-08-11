@@ -1,5 +1,8 @@
 package com.mctoybox.onetimecode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -8,7 +11,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.command.defaults.VanillaCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.permissions.Permission;
@@ -36,41 +38,43 @@ public class UseCommand implements CommandExecutor {
 			BookMeta bMeta = (BookMeta) p.getItemInHand().getItemMeta();
 			if (bMeta.hasAuthor() && bMeta.getAuthor().equals("One Time Code")) {
 				Command cmd = mainClass.getCmd(bMeta.getPage(2).split(" ")[0]);
+				List<String> permsToAdd = new ArrayList<String>();
+				
 				if (cmd == null) {
 					p.sendMessage("Command not found");
 					return true;
 				}
-				// Vanilla Commands
-				if (cmd instanceof VanillaCommand) {
-					p.addAttachment(mainClass, cmd.getPermission(), true, mainClass.ticksToAllowPermissions);
-				}
-				// WorldEdit + WorldGuard Commands
-				else if (mainClass.getServer().getPluginManager().getPlugin("WorldEdit") != null && cmd instanceof DynamicPluginCommand) {
+				if (mainClass.getServer().getPluginManager().getPlugin("WorldEdit") != null && cmd instanceof DynamicPluginCommand) {
 					DynamicPluginCommand dpCommand = ((DynamicPluginCommand) cmd);
 					if (dpCommand.getPermissions() == null) {
 						for (Permission perm : dpCommand.getPlugin().getDescription().getPermissions()) {
-							p.addAttachment(mainClass, perm.getName(), true, mainClass.ticksToAllowPermissions);
+							permsToAdd.add(perm.getName());
 						}
 					}
 					else {
 						for (String perm : dpCommand.getPermissions()) {
-							p.addAttachment(mainClass, perm, true, mainClass.ticksToAllowPermissions);
+							permsToAdd.add(perm);
 						}
 					}
 				}
-				// All none specified commands
-				else {
+				else if (cmd instanceof PluginCommand) {
 					for (Permission perm : ((PluginCommand) cmd).getPlugin().getDescription().getPermissions()) {
-						p.addAttachment(mainClass, perm.getName(), true, mainClass.ticksToAllowPermissions);
+						permsToAdd.add(perm.getName());
 					}
+				}
+				for (String perm : permsToAdd) {
+					MainClass.perms.playerAdd(p, perm);
 				}
 				
 				p.setItemInHand(null);
 				
 				p.chat("/" + bMeta.getPage(2).replaceAll("%player%", p.getName()));
+				for (String perm : permsToAdd) {
+					MainClass.perms.playerRemove(p, perm);
+				}
 				p.sendMessage(ChatColor.GREEN + "OneTimeCode book used!");
 				Bukkit.broadcast(ChatColor.GRAY + "" + ChatColor.ITALIC + "[" + p.getName() + " used a one time code!]", Server.BROADCAST_CHANNEL_ADMINISTRATIVE);
-				Bukkit.broadcast(ChatColor.GRAY + "" + ChatColor.ITALIC + "[Command: " + bMeta.getPage(2) + "]", Server.BROADCAST_CHANNEL_ADMINISTRATIVE);
+				Bukkit.broadcast(ChatColor.GRAY + "" + ChatColor.ITALIC + "[Command: " + bMeta.getPage(2).substring(0, bMeta.getPage(2).length() - 1) + "]", Server.BROADCAST_CHANNEL_ADMINISTRATIVE);
 				
 			}
 			else
@@ -81,5 +85,4 @@ public class UseCommand implements CommandExecutor {
 		
 		return true;
 	}
-	
 }

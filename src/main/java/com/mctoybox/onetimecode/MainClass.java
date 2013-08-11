@@ -2,13 +2,17 @@ package com.mctoybox.onetimecode;
 
 import java.lang.reflect.Field;
 
+import net.milkbowl.vault.permission.Permission;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.SimpleCommandMap;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MainClass extends JavaPlugin {
 	protected int ticksToAllowPermissions;
+	public static Permission perms = null;
 	
 	@Override
 	public void onEnable() {
@@ -17,6 +21,9 @@ public class MainClass extends JavaPlugin {
 		
 		saveDefaultConfig();
 		ticksToAllowPermissions = getConfig().getInt("ticksToAllowPermissions", 2);
+		
+		RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
+		perms = rsp.getProvider();
 	}
 	
 	protected Command getCmd(String commandName) {
