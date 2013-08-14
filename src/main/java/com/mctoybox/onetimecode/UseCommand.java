@@ -11,6 +11,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.command.defaults.VanillaCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.permissions.Permission;
@@ -61,6 +62,10 @@ public class UseCommand implements CommandExecutor {
 					for (Permission perm : ((PluginCommand) cmd).getPlugin().getDescription().getPermissions()) {
 						permsToAdd.add(perm.getName());
 					}
+				}
+				else if (cmd instanceof VanillaCommand) {
+					VanillaCommand vCmd = (VanillaCommand) cmd;
+					permsToAdd.add(vCmd.getPermission());
 				}
 				for (String perm : permsToAdd) {
 					MainClass.perms.playerAdd(p, perm);

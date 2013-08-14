@@ -11,16 +11,12 @@ import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MainClass extends JavaPlugin {
-	protected int ticksToAllowPermissions;
 	public static Permission perms = null;
 	
 	@Override
 	public void onEnable() {
 		getCommand("otc").setExecutor(new UseCommand(this));
 		getCommand("createotc").setExecutor(new CreateCommand(this));
-		
-		saveDefaultConfig();
-		ticksToAllowPermissions = getConfig().getInt("ticksToAllowPermissions", 2);
 		
 		RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
 		perms = rsp.getProvider();

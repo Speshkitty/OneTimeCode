@@ -1,4 +1,0 @@
-#How many ticks to allow permissions to be granted for
-#Increase this if commands aren't running due to permission
-#default: 2
-ticksToAllowPermissions: 2
