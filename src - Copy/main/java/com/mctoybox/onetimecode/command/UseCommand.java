@@ -1,4 +1,4 @@
-package com.mctoybox.onetimecode;
+package com.mctoybox.onetimecode.command;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.permissions.Permission;
 
+import com.mctoybox.onetimecode.MainClass;
 import com.sk89q.bukkit.util.DynamicPluginCommand;
 
 public class UseCommand implements CommandExecutor {

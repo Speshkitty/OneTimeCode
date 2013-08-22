@@ -1,4 +1,4 @@
-package com.mctoybox.onetimecode;
+package com.mctoybox.onetimecode.command;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import com.mctoybox.onetimecode.MainClass;
 
 public class CreateCommand implements CommandExecutor {
 	private MainClass mainClass;

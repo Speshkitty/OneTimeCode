@@ -1,6 +1,6 @@
 name: OneTimeCode
 main: com.mctoybox.onetimecode.MainClass
-version: 1.7
+version: 1.8
 author: Sir_Speshkitty
 depend: [Vault]
 softdepend: [WorldEdit]
@@ -8,11 +8,33 @@ commands:
   otc:
     description: Using OTC books
     permission: otc.use
+    usage: |
+      /claimotc - Used to claim any OTC books you were granted while you were offline
+      /createotc [title] - Used to create a blank OTC book with no commands. Optional title.
+      /createotc p:player [t:title] c:command1 [c:command2...] - Creates a OTC book with a varying number of commands (minimum one), a title (optional), and grants it to the named player. Intended for things like BuyCraft.
+      /grantotc <playername> - Used to send someone a OTC book. 
+      /modifyotc - See http://tinyurl.com/ko5aptn for a full command reference.
+  claimotc:
+    description: Used for claiming OTC books
+    permission: otc.use
     usage: /<command>
   createotc:
-    description: Creating OTC books
+    description: Used to create OTC books
     permission: otc.create
-    usage: /<command> <player> <commanddata>
+    usage: | 
+      /<command> [title] - Creates a blank OTC book to be filled in with /modifyotc.
+      /<command> p:player [t:title] c:command1 [c:command2...] - Creates a OTC book with a varying number of commands (minimum one), a title (optional), and grants it to the named player.
+  grantotc:
+    description: Used to grant OTC books to people. When granted, books will become unmodifiable with /modifyotc.
+    permission: otc.create
+    usage: /<command> <playername>
+  modifyotc:
+    description: Used to modify existing OTC books. Cannot be used on OTC books that have been granted.
+    permission: otc.create
+    usage: |
+      /<command> title <newtitle> - Used to set the title of a OTC book.
+      /<command> setcommand [linenumber] <command details> - Used to set a specific command at a line on page 2 of the book, overwriting what was there before. If no line number is entered, the command is added to the end.
+      /<command> insertcommand <linenumber> <command details> - Used to insert a command at the specified line number. 
 permissions:
   otc.use:
     default: true

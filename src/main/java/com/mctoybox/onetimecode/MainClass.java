@@ -1,55 +1,26 @@
 package com.mctoybox.onetimecode;
 
-import java.lang.reflect.Field;
-
-import net.milkbowl.vault.permission.Permission;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.SimpleCommandMap;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.SimplePluginManager;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.mctoybox.onetimecode.command.CommandHandler;
+import com.mctoybox.onetimecode.listeners.LoginListener;
+
 public class MainClass extends JavaPlugin {
-	public static Permission perms = null;
-	
-	@Override
 	public void onEnable() {
-		getCommand("otc").setExecutor(new UseCommand(this));
-		getCommand("createotc").setExecutor(new CreateCommand(this));
+		saveDefaultConfig();
 		
-		RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-		perms = rsp.getProvider();
+		getServer().getPluginManager().registerEvents(new LoginListener(this), this);
+		
+		CommandHandler ch = new CommandHandler(this);
+		getCommand("otc").setExecutor(ch);
+		getCommand("claimotc").setExecutor(ch);
+		getCommand("createotc").setExecutor(ch);
+		getCommand("grantotc").setExecutor(ch);
+		getCommand("modifyotc").setExecutor(ch);
 	}
 	
-	protected Command getCmd(String commandName) {
-		SimplePluginManager spm = (SimplePluginManager) getServer().getPluginManager();
-		
-		Field f = null;
-		try {
-			f = SimplePluginManager.class.getDeclaredField("commandMap");
-		}
-		catch (NoSuchFieldException e) {
-			e.printStackTrace();
-		}
-		catch (SecurityException e) {
-			e.printStackTrace();
-		}
-		f.setAccessible(true);
-		
-		SimpleCommandMap scm;
-		try {
-			scm = (SimpleCommandMap) f.get(spm);
-			return scm.getCommand(commandName);
-			
-		}
-		catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		}
-		catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		return null;
-		
+	public static String getVersion() {
+		return Bukkit.getServer().getPluginManager().getPlugin("OneTimeCode").getDescription().getVersion();
 	}
 }
