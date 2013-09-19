@@ -1,6 +1,6 @@
 name: OneTimeCode
 main: com.mctoybox.onetimecode.MainClass
-version: 1.8
+version: 2.0
 author: Sir_Speshkitty
 depend: [Vault]
 softdepend: [WorldEdit]
@@ -11,30 +11,35 @@ commands:
     usage: |
       /claimotc - Used to claim any OTC books you were granted while you were offline
       /createotc [title] - Used to create a blank OTC book with no commands. Optional title.
-      /createotc p:player [t:title] c:command1 [c:command2...] - Creates a OTC book with a varying number of commands (minimum one), a title (optional), and grants it to the named player. Intended for things like BuyCraft.
+      /createotc [p:player] [t:title] [u:uses] [c:command1] [c:command2...] - Creates a OTC book with a varying number of commands (minimum one), a title (optional), and grants it to the named player. Intended for things like BuyCraft.
       /grantotc <playername> - Used to send someone a OTC book. 
+      /sealotc - Used to seal an OTC book
       /modifyotc - See http://tinyurl.com/ko5aptn for a full command reference.
   claimotc:
     description: Used for claiming OTC books
     permission: otc.use
-    usage: /<command>
+    usage: /claimotc
   createotc:
     description: Used to create OTC books
     permission: otc.create
-    usage: | 
-      /<command> [title] - Creates a blank OTC book to be filled in with /modifyotc.
-      /<command> p:player [t:title] c:command1 [c:command2...] - Creates a OTC book with a varying number of commands (minimum one), a title (optional), and grants it to the named player.
+    usage: /createotc [p:player] [t:title] [u:uses] [c:command1] [c:command2...] - Creates a OTC book with commands (optional), a title (optional), the specified number of uses (default 1), and grants it to the named player. If no player is named, the book remains unsealed and is given to the player running the command.
   grantotc:
     description: Used to grant OTC books to people. When granted, books will become unmodifiable with /modifyotc.
-    permission: otc.create
-    usage: /<command> <playername>
+    permission: otc.use
+    usage: /grantotc <playername>
   modifyotc:
     description: Used to modify existing OTC books. Cannot be used on OTC books that have been granted.
     permission: otc.create
     usage: |
-      /<command> title <newtitle> - Used to set the title of a OTC book.
-      /<command> setcommand [linenumber] <command details> - Used to set a specific command at a line on page 2 of the book, overwriting what was there before. If no line number is entered, the command is added to the end.
-      /<command> insertcommand <linenumber> <command details> - Used to insert a command at the specified line number. 
+      /modifyotc title <newtitle> - Used to set the title of an OTC book.
+      /modifyotc addcommand <command> - Used to add a command to the end of the book.
+      /modifyotc setcommand <linenumber> [command] - Used to set a specific command at a line on page 2 of the book, overwriting what was there before. If no command is entered, the line is removed.
+      /modifyotc insertcommand <linenumber> <command details> - Used to insert a command at the specified line number. 
+      /modifyotc uses <number> - Sets the number of uses remaining in the book
+  sealotc: 
+    description: Used to seal an OTC book
+    permission: otc.use
+    usage: /sealotc
 permissions:
   otc.use:
     default: true

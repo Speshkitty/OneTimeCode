@@ -1,22 +1,19 @@
 #Stores information on unclaimed books
 books:
   player_name:
-    amount: 2
     book1:
       title: Set Stone
-      id: 1
       commands:
         - //hpos1
         - //hpos2
         - //set 1
-      grantedby: admin_name
       version: 1.7
     book2:
       title: Kick player
-      id: 2
       commands:
         - /kick %player%
-      grantedby: admin_name
-      claimedon: 0
-      usedon: 0
       version: 1.8
+permissions:
+  gamemode:
+    - bukkit.command.gamemode
+    - essentials.gamemode
